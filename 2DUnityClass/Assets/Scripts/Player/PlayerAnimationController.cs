@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
@@ -10,33 +8,22 @@ public class PlayerAnimationController : MonoBehaviour
 
     [SerializeField] SpriteRenderer spRender;
 
-    // Start is called before the first frame update
     void Start()
     {
         AnimatorRef = GetComponent<Animator>();
         currentState = new AnimationState() { MovementState = State.IDLE };
     }
 
-    // Update is called once per frame
     void Update()
     {
         UpdateAnimations();
     }
 
-
-    public void ChangeState(AnimationState state)
-    {
-        if (currentState.Compare(state))
-        {
-            currentState = state;
-        }
-    }
-
-    public void UpdateAnimations()
+    void UpdateAnimations()
     {
         ValidadeState(currentState);
     }
-    public void ValidadeState(AnimationState newState)
+    void ValidadeState(AnimationState newState)
     {
         bool isWalking = currentState.MovementState == State.WALK;
         bool isRunning = currentState.MovementState == State.RUN;
@@ -48,9 +35,17 @@ public class PlayerAnimationController : MonoBehaviour
         AnimatorRef.SetBool("IsRunning", isRunning);
         AnimatorRef.SetBool("Jumping", jump);
     }
+
     public void SetLayerWeight(float weight)
     {
         AnimatorRef.SetLayerWeight(1, weight);
+    }
+    public void ChangeState(AnimationState state)
+    {
+        if (currentState.Compare(state))
+        {
+            currentState = state;
+        }
     }
     public void InvertImage(bool value)
     {
@@ -65,7 +60,6 @@ public enum State
     IDLE,
     JUMP
 }
-
 
 public struct AnimationState
 {

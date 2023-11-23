@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -45,13 +41,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        GroundDetector();
         Movement();
         Jump();
-        GroundDetector();
     }
 
     void ChangeAnimation()
     {
+        if (!animController)
+        {
+            Debug.LogError($"Null AnimatorController in {gameObject.name}!");
+            return;
+        }
         if (onGround)
         {      
             if (MoveX != 0)
@@ -72,15 +73,24 @@ public class PlayerMovement : MonoBehaviour
             animController.ChangeState(new AnimationState { MovementState = State.JUMP });
         }
     }
-
     void ChangeLookSide()
     {
+        if (!animController)
+        {
+            Debug.LogError($"Null AnimatorController in {gameObject.name}!");
+            return;
+        }
         changeLook = (MoveX == 0) ? changeLook : changeLook = (MoveX < 0) ? true : false;
         animController.InvertImage(changeLook);
     }
 
     void Movement()
     {
+        if (!rb)
+        {
+            Debug.LogError($"Null RigidBody in {gameObject.name}");
+            return;
+        }
         Vector2 directionForce = transform.right * MoveX;
         if (running)
         {
@@ -91,12 +101,17 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(directionForce * velocity);
         }
     }
-
     void Jump()
     {
+        if (!animController)
+        {
+            Debug.LogError($"Null AnimatorController in {gameObject.name}!");
+            return;
+        }
         if (!jumped || !onGround) return;
 
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        onGround = false;
     }
 
     void ReadInputs()
@@ -107,7 +122,6 @@ public class PlayerMovement : MonoBehaviour
 
         jumped = footActions.Jump.IsPressed();
     }
-
     void GroundDetector()
     {
         Vector2 position = transform.position - (Vector3.down * startRay);
