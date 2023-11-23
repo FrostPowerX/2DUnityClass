@@ -8,6 +8,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     public AnimationState currentState;
 
+    [SerializeField] SpriteRenderer spRender;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,12 +32,6 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-
-    public void UpdateState()
-    {
-
-    }
-
     public void UpdateAnimations()
     {
         ValidadeState(currentState);
@@ -52,10 +48,13 @@ public class PlayerAnimationController : MonoBehaviour
         AnimatorRef.SetBool("IsRunning", isRunning);
         AnimatorRef.SetBool("Jumping", jump);
     }
-
     public void SetLayerWeight(float weight)
     {
         AnimatorRef.SetLayerWeight(1, weight);
+    }
+    public void InvertImage(bool value)
+    {
+        spRender.flipX = value;
     }
 }
 

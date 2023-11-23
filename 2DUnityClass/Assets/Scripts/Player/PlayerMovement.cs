@@ -2,27 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] Rigidbody2D rb;
     [SerializeField] PlayerAnimationController animController;
-    [SerializeField] SpriteRenderer spRender;
 
     Controlls controlls;
     Controlls.OnFootActions footActions;
 
+
+    [Header("Properties")]
     [SerializeField] float velocity;
     [SerializeField] float sprintVelocity;
     [SerializeField] float jumpForce;
-    [SerializeField] float startRay;
-    [SerializeField] float groundDistance;
+    [SerializeField][Range(-1,0)] float startRay;
+    [SerializeField][Range(0.1f,1)] float groundDistance;
 
+    [Header("Debug")]
     [SerializeField] float MoveX;
 
-    bool running;
-    bool jumped;
+    [SerializeField] bool running;
+    [SerializeField] bool jumped;
     [SerializeField] bool onGround;
+    [SerializeField] bool changeLook;
 
     private void Awake()
     {
@@ -70,7 +75,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ChangeLookSide()
     {
-        spRender.flipX = (MoveX == 0) ? spRender.flipX : spRender.flipX = (MoveX < 0) ? true : false;
+        changeLook = (MoveX == 0) ? changeLook : changeLook = (MoveX < 0) ? true : false;
+        animController.InvertImage(changeLook);
     }
 
     void Movement()
