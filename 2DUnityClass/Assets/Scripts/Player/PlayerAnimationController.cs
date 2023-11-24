@@ -28,7 +28,7 @@ public class PlayerAnimationController : MonoBehaviour
         bool isWalking = currentState.MovementState == State.WALK;
         bool isRunning = currentState.MovementState == State.RUN;
         bool jump = currentState.MovementState == State.JUMP;
-
+        //               if         true        false
         isWalking = (isRunning) ? isRunning : isWalking;
 
         AnimatorRef.SetBool("IsWalking", isWalking);

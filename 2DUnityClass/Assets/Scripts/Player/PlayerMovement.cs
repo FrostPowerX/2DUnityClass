@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     Controlls controlls;
     Controlls.OnFootActions footActions;
 
-
     [Header("Properties")]
     [SerializeField] float velocity;
     [SerializeField] float sprintVelocity;
@@ -91,7 +90,9 @@ public class PlayerMovement : MonoBehaviour
             Debug.LogError($"Null RigidBody in {gameObject.name}");
             return;
         }
+
         Vector2 directionForce = transform.right * MoveX;
+
         if (running)
         {
             rb.AddForce(directionForce * sprintVelocity);
